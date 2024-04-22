@@ -36,6 +36,7 @@ private final String login = "WEB-INF/html/logindoc.html";
                     break;
                 case "/login":
                     request.getRequestDispatcher(login).forward(request,response);
+                    break;
 
                 default:
                     response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found.");
