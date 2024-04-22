@@ -12,7 +12,7 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-@WebServlet(value = {"/reg", "/accueil", "/rendezvous" })
+@WebServlet(value = {" /accueil", "/rendezvous" })
 public class Regservlet extends HttpServlet {
 
 private final String index ="WEB-INF/html/index.html";
