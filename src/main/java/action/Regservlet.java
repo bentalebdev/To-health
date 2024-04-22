@@ -12,40 +12,37 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-@WebServlet({"/reg", "/form",})
+@WebServlet({"/reg", "/accueil", "/rendezvous" })
 public class Regservlet extends HttpServlet {
+
+private final String index ="/web-inf/html/index.html";
+private final String create = "/web-inf/html/form.jsp";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-    String name = request.getParameter("name");
-    String addresse = request.getParameter("addresse");
-    try {
-        String sql = "INSERT INTO entreprise (nome, adresse) VALUES (?, ?)";
-        Connection connection = DB.getCon();
-        PreparedStatement preparedStatement= connection.prepareStatement(sql);
-        preparedStatement.setString(1, name);
-        preparedStatement.setString(2,addresse);
-        preparedStatement.executeUpdate();
-        PrintWriter printWriter = response.getWriter();
-        printWriter.println("ajouter avec succes");
-
-
-
-    } catch (Exception ex) {
-
-
-    }
 
     }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException {
         // Forward the request to the JSP file for the form
-        try {
-            request.getRequestDispatcher("/WEB-INF/html/index.html").forward(request, response);
-        } catch (IOException e) {
+
+        String action = request.getServletPath();
+        try{
+            switch (action)
+            {
+                case "/accueil":
+                   request.getRequestDispatcher(index).forward(request,response);
+
+                case  "/rendezvous":
+                    request.getRequestDispatcher(create).forward(request,response);
+            }
+        }
+
+         catch (IOException e) {
             throw new RuntimeException(e);
+        }
         }
     }
 
 
-}
+
