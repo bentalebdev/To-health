@@ -12,39 +12,37 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-@WebServlet(value = {"/reg", "/accueil", "/rendezvous" })
+@WebServlet({"/reg", "/accueil", "/rendezvous" })
 public class Regservlet extends HttpServlet {
 
-private final String index ="WEB-INF/html/index.html";
-private final String create = "WEB-INF/html/form.jsp";
+private final String index ="/web-inf/html/index.html";
+private final String create = "/web-inf/html/form.jsp";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 
     }
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            String action = request.getServletPath();
-            switch (action) {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+        // Forward the request to the JSP file for the form
+
+        String action = request.getServletPath();
+        try{
+            switch (action)
+            {
                 case "/accueil":
-                    request.getRequestDispatcher(index).forward(request, response);
-                    break;
+                   request.getRequestDispatcher(index).forward(request,response);
 
-                case "/rendezvous":
-                    request.getRequestDispatcher(create).forward(request, response);
-                    break;
-
-                default:
-                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found.");
-                    break;
+                case  "/rendezvous":
+                    request.getRequestDispatcher(create).forward(request,response);
             }
-        } catch (ServletException | IOException e) {
+        }
+
+         catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
         }
-
-
+    }
 
 
 
