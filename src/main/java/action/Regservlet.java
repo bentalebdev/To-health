@@ -16,11 +16,12 @@ import java.sql.PreparedStatement;
 public class Regservlet extends HttpServlet {
 
 private final String index ="WEB-INF/html/index.html";
-private final String create = "WEB-INF/html/form.jsp";
+private final String create ="WEB-INF/html/form.jsp";
 private final String login = "WEB-INF/html/logindoc.html";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+
 
     }
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
