@@ -56,7 +56,7 @@
 </style>
 </head>
 <body>
-    <form action="#" method="post" onsubmit="return validateForm()">
+<form method = "post" action = "rendezvous " >
         <label for="nom">Nom :</label>
         <input type="text" id="nom" name="nom" required>
 
@@ -147,5 +147,7 @@
             document.getElementById('date').setAttribute('min', minDate);
         });
     </script>
+    </form>
 </body>
+
 </html>
