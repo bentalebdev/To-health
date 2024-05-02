@@ -15,7 +15,7 @@ import java.io.IOException;
 public class Regservlet extends HttpServlet {
 
 private final String index ="WEB-INF/html/index.html";
-private final String create = "WEB-INF/html/form.jsp";
+private final String create ="WEB-INF/html/form.jsp";
 private final String login = "WEB-INF/html/logindoc.html";
 
 private rendezvousIMP intRendezvous;
@@ -50,6 +50,7 @@ public void init() throws ServletException
                 break;
 
         }
+
 
 
     }
