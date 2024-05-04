@@ -17,6 +17,8 @@ public class Regservlet extends HttpServlet {
 private final String index ="WEB-INF/html/index.html";
 private final String create ="WEB-INF/html/form.jsp";
 private final String login = "WEB-INF/html/logindoc.html";
+private final String success = "WEB-INF/html/success.jsp";
+
 
 private rendezvousIMP intRendezvous;
 public void init() throws ServletException
@@ -47,6 +49,12 @@ public void init() throws ServletException
                 rendezvous1.setDate_heure(date_heure);
 
                 intRendezvous.prendre(rendezvous1);
+                try {
+                    request.getRequestDispatcher("WEB-INF/html/success.jsp").forward(request, response);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
                 break;
 
         }
