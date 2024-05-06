@@ -25,7 +25,7 @@ private final String login = "WEB-INF/html/logindoc.html";
 private final String dashbord = "WEB-INF/html/dashbord.html";
 private final String rendezvous = "WEB-INF/html/appointments.html";
 private final String patients = "WEB-INF/html/patients.html";
-private final String reservation = "WEB-INF/html/rdnauj.html";
+private final String reservation = "WEB-INF/html/rdnauj.jsp";
 
 private rendezvousIMP intRendezvous;
 public void init() throws ServletException
@@ -58,6 +58,23 @@ public void init() throws ServletException
 
                    intRendezvous.prendre(rendezvous1);
                    break;
+               case "/reservation" :
+                   String nom1 = request.getParameter("nom");
+                   String prenom1 = request.getParameter("prenom");
+                   String cin1 = request.getParameter("cin");
+                   int telephone1 = Integer.parseInt(request.getParameter("telephone"));
+                   String date1 = request.getParameter("date");
+                   String date_heure1 = request.getParameter("heure");
+
+                   rendezvous rendezvous2 = new rendezvous();
+                   rendezvous2.setNom(nom1);
+                   rendezvous2.setPrenom(prenom1);
+                   rendezvous2.setCin(cin1);
+                   rendezvous2.setTelephone(telephone1);
+                   rendezvous2.setDate(date1);
+                   rendezvous2.setDate_heure(date_heure1);
+
+                   intRendezvous.prendre(rendezvous2);
 
                case "/login":
                    String log = request.getParameter("username");

@@ -32,7 +32,7 @@ Connection cnx = connectiondb.getConnection();
     {
          ResultSet rs;
         List<rendezvous> allrendezvous =new ArrayList<>();
-        String strquery = "select *from rendezvous";
+        String strquery = "select * from rendezvous";
 
         try
         {
@@ -42,12 +42,12 @@ Connection cnx = connectiondb.getConnection();
             while(rs.next())
             {
                 rendezvous rendezvous1 = new rendezvous();
-                rendezvous1.setNom(rs.getString(1));
-                rendezvous1.setPrenom(rs.getString(2));
-                rendezvous1.setCin(rs.getString(3));
-                rendezvous1.setTelephone(rs.getInt(4));
-                rendezvous1.setDate(rs.getString(5));
-                rendezvous1.setDate_heure(rs.getString(6));
+                rendezvous1.setNom(rs.getString("nom"));
+                rendezvous1.setPrenom(rs.getString("prenom"));
+                rendezvous1.setCin(rs.getString("cin"));
+                rendezvous1.setTelephone(rs.getInt("telephone"));
+                rendezvous1.setDate(rs.getString("jour"));
+                rendezvous1.setDate_heure(rs.getString("date_heure"));
 
                 allrendezvous.add(rendezvous1);
             }
