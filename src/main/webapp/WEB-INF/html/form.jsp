@@ -56,7 +56,7 @@
 </style>
 </head>
 <body>
-<form method = "post" action = "rendezvous " >
+<form method = "post" action = "/To-health/rendezvous " >
         <label for="nom">Nom :</label>
         <input type="text" id="nom" name="nom" required>
 

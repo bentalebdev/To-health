@@ -4,6 +4,10 @@ import models.rendezvous;
 
 public interface IntRendezvous {
     void prendre(rendezvous r);
+List<rendezvous> getall();
+
+
+
 
 
 }
