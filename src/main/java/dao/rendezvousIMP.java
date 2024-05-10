@@ -1,14 +1,16 @@
 package dao;
+import models.rendezvous;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import models.rendezvous;
 
 public class rendezvousIMP implements IntRendezvous{
 
 Connection cnx = connectiondb.getConnection();
+    ResultSet rs;
     @Override
     public void prendre(rendezvous r) {
         try
@@ -30,10 +32,9 @@ Connection cnx = connectiondb.getConnection();
     @Override
     public List<rendezvous> getall()
     {
-         ResultSet rs;
-        List<rendezvous> allrendezvous =new ArrayList<>();
-        String strquery = "select *from rendezvous";
 
+        List<rendezvous> allrendezvous =new ArrayList<>();
+        String strquery = "select * from rendezvous";
         try
         {
             PreparedStatement pst = cnx.prepareStatement(strquery);
@@ -41,15 +42,15 @@ Connection cnx = connectiondb.getConnection();
 
             while(rs.next())
             {
-                rendezvous rendezvous1 = new rendezvous();
-                rendezvous1.setNom(rs.getString(1));
-                rendezvous1.setPrenom(rs.getString(2));
-                rendezvous1.setCin(rs.getString(3));
-                rendezvous1.setTelephone(rs.getInt(4));
-                rendezvous1.setDate(rs.getString(5));
-                rendezvous1.setDate_heure(rs.getString(6));
+                rendezvous rendezvous = new  rendezvous();
+                rendezvous.setNom(rs.getString(1));
+                rendezvous.setPrenom(rs.getString(2));
+                rendezvous.setCin(rs.getString(3));
+                rendezvous.setTelephone(rs.getInt(4));
+                rendezvous.setDate(rs.getString(5));
+                rendezvous.setDate_heure(rs.getString(6));
 
-                allrendezvous.add(rendezvous1);
+                allrendezvous.add(rendezvous);
             }
 
 
@@ -57,4 +58,21 @@ Connection cnx = connectiondb.getConnection();
         return allrendezvous;
     }
 
+    @Override
+    public rendezvous getbydate(String date)
+    {
+
+        return null;
+    }
+    @Override
+    public void delete(rendezvous rendezvous)
+    {
+
+    }
+
+    @Override
+    public void update(rendezvous rendezvous)
+    {
+
+    }
 }

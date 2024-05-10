@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri ="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -75,7 +78,14 @@
     <h1>Rendez-vous d'aujourd'hui</h1>
 
     <!-- Modified Button -->
+    <label>Mot cle </label>
+    <input type = "text" name = "motcle"/>
+    <button type = "submit" class="btn btn-primary" > chercher </button>
+
     <button class="button-71" id="filterButton">Filtrer les rendez-vous</button>
+    <button onclick="window.location.href='/To-health/reserver'">Reserver un rendez-vous</button>
+
+
 
     <table id="appointments">
         <thead>
@@ -86,11 +96,22 @@
                 <th>Téléphone</th>
                 <th>Jour</th>
                 <th>Heure</th>
-
             </tr>
         </thead>
-        <tbody id="appointmentsBody">
-            <!-- Les rendez-vous seront ajoutés ici dynamiquement -->
+        <tbody >
+            <c:forEach items = "${list}" var="rendezvous">
+            <tr>
+                <td>${rendezvous.id}</td>
+                <td>${rendezvous.nom}</td>
+                <td>${rendezvous.prenom}</td>
+                <td>${rendezvous.cin}</td>
+                 <td>${rendezvous.telephone}</td>
+                 <td>${rendezvous.date}</td>
+                 <td>${rendezvous.date_heure}</td>
+            </tr>
+
+           </c:forEach>
+
         </tbody>
     </table>
 

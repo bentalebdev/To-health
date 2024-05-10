@@ -82,68 +82,70 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Votre contenu HTML existant ici -->
-        <h2>Gestion des patients</h2>
-        <form action="#" method="post">
-            <label for="nom">Nom :</label>
-            <input type="text" id="nom" name="nom" placeholder="Entrez le nom" required>
+<div class="container">
+    <!-- Boutons Dashboard et Ajouter un patient -->
+    <button class="btn" onclick="window.location.href='/To-health/dashboard'">Dashboard</button>
+    <button class="btn" onclick="window.location.href='/To-health/formpatient'">Ajouter un patient</button>
 
-            <!-- Ajoutez les autres champs ici -->
+    <h2>Gestion des patients</h2>
+    <form action="#" method="post">
+        <label for="nom">Nom :</label>
+        <input type="text" id="nom" name="nom" placeholder="Entrez le nom" required>
 
-            <input type="submit" value="Enregistrer">
-        </form>
+        <!-- Ajoutez les autres champs ici -->
 
-        <h3>Liste des patients</h3>
-        <table id="patientTable">
-            <!-- Vos en-têtes de tableau actuels ici -->
-            <tbody>
-                <!-- Les données des patients seront affichées ici -->
-                <tr>
-                    <td>John</td>
-                    <td>Doe</td>
-                    <td>1990-01-01</td>
-                    <td>Masculin</td>
-                    <td>123456789</td>
-                    <td>0612345678</td>
-                    <td>john@example.com</td>
-                    <td>2024-05-01</td>
-                    <td>
-                        <button class="btn" onclick="afficherPatient(this)">Afficher</button>
-                        <button class="btn" onclick="modifierPatient(this)">Modifier</button>
-                        <button class="btn" onclick="supprimerPatient(this)">Supprimer</button>
-                    </td>
-                </tr>
-                <!-- Ajoutez d'autres lignes pour d'autres patients -->
-            </tbody>
-        </table>
-        <input type="text" id="recherche" placeholder="Rechercher un patient...">
-        <button class="btn" onclick="rechercher()">Rechercher</button>
-    </div>
+        <input type="submit" value="Enregistrer">
+    </form>
 
-    <script>
-        function afficherPatient(btn) {
-            // Logique pour afficher les détails du patient associé au bouton
-            // par exemple, vous pouvez ouvrir une boîte de dialogue avec les détails du patient
-            alert("Afficher les détails du patient");
-        }
+    <h3>Liste des patients</h3>
+    <table id="patientTable">
+        <!-- Vos en-têtes de tableau actuels ici -->
+        <tbody>
+        <!-- Les données des patients seront affichées ici -->
+        <tr>
+            <td>nom</td>
+            <td>prenom</td>
+            <td>cin</td>
+            <td>genre</td>
+            <td>date_naissance</td>
+            <td>derniere_visite</td>
+            <td>telehone</td>
+            <td>acte_medicale</td>
+            <td>
+                <button class="btn" onclick="modifierPatient(this)">Modifier</button>
+                <button class="btn" onclick="supprimerPatient(this)">Supprimer</button>
+            </td>
+        </tr>
+        <!-- Ajoutez d'autres lignes pour d'autres patients -->
+        </tbody>
+    </table>
+    <input type="text" id="recherche" placeholder="Rechercher un patient...">
+    <button class="btn" onclick="rechercher()">Rechercher</button>
+</div>
 
-        function modifierPatient(btn) {
-            // Logique pour modifier les détails du patient associé au bouton
-            // par exemple, vous pouvez ouvrir un formulaire pré-rempli pour modifier les détails du patient
-            alert("Modifier les détails du patient");
-        }
+<script>
+    function afficherPatient(btn) {
+        // Logique pour afficher les détails du patient associé au bouton
+        // par exemple, vous pouvez ouvrir une boîte de dialogue avec les détails du patient
+        alert("Afficher les détails du patient");
+    }
 
-        function supprimerPatient(btn) {
-            // Obtenez la ligne du tableau parente du bouton
-            var row = btn.parentNode.parentNode;
-            // Supprimez la ligne du tableau
-            row.parentNode.removeChild(row);
-        }
+    function modifierPatient(btn) {
+        // Logique pour modifier les détails du patient associé au bouton
+        // par exemple, vous pouvez ouvrir un formulaire pré-rempli pour modifier les détails du patient
+        alert("Modifier les détails du patient");
+    }
 
-        function rechercher() {
-            // Logique de recherche actuelle
-        }
-    </script>
+    function supprimerPatient(btn) {
+        // Obtenez la ligne du tableau parente du bouton
+        var row = btn.parentNode.parentNode;
+        // Supprimez la ligne du tableau
+        row.parentNode.removeChild(row);
+    }
+
+    function rechercher() {
+        // Logique de recherche actuelle
+    }
+</script>
 </body>
 </html>

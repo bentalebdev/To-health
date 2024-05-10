@@ -1,8 +1,7 @@
 package action;
 
+import dao.IntRendezvous;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,22 +9,26 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import models.rendezvous;
 import dao.rendezvousIMP;
-import dao.IntRendezvous;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-@WebServlet(value = {"/reg", "/accueil", "/rendezvous", "/login","/reservation" , "/patient" ,"/tousrendezvous" })
+@WebServlet(value = {"/accueil", "/rendezvous", "/login","/reservation" , "/patient" ,"/reserver", "/formpatient" , "/dashboard" })
 public class Regservlet extends HttpServlet {
 
 private final String index ="WEB-INF/html/index.html";
 private final String create ="WEB-INF/html/form.jsp";
 private final String login = "WEB-INF/html/logindoc.html";
-private final String dashbord = "WEB-INF/html/dashbord.html";
-private final String rendezvous = "WEB-INF/html/appointments.html";
+private final String dashboard = "WEB-INF/html/dashbord.html";
+private final String assistantrendezvous = "WEB-INF/html/appointments.html";
 private final String patients = "WEB-INF/html/patients.html";
-private final String reservation = "WEB-INF/html/rdnauj.html";
+private final String reservations = "WEB-INF/html/rdnauj.jsp";
+private final String formpatient = "WEB-INF/html/formPatient.jsp";
+private final String Confirmer = "WEB-INF/html/success.jsp";
+private IntRendezvous dao = new rendezvousIMP();
+
 
 private rendezvousIMP intRendezvous;
 public void init() throws ServletException
@@ -33,6 +36,60 @@ public void init() throws ServletException
     super.init();
     intRendezvous = new rendezvousIMP();
 }
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            String action = request.getServletPath();
+            switch (action) {
+                case "/accueil":
+                    request.getRequestDispatcher(index).forward(request, response);
+                    break;
+
+                case "/rendezvous":
+
+                    request.getRequestDispatcher(create).forward(request, response);
+                    break;
+
+                case "/login":
+                    request.getRequestDispatcher(login).forward(request,response);
+                    break;
+
+                case "/reservation":
+                case "/patient":
+                case "/reserver":
+                    HttpSession session = request.getSession(false);
+                    if(session != null && session.getAttribute("username") != null)
+                    {
+                        if(action.equals("/reservation"))
+                        {
+                            List<rendezvous> allrendezvous = dao.getall();
+                            request.setAttribute("list",allrendezvous);
+                            request.getRequestDispatcher(reservations).forward(request,response);
+
+                        }
+                        else if (action.equals("/patient"))
+                        {request.getRequestDispatcher(patients).forward(request,response);}
+                        else if(action.equals("/reserver"))
+                        {
+                            request.getRequestDispatcher(assistantrendezvous).forward(request,response);
+                        }
+                    }
+                    else
+                    {request.getRequestDispatcher(login).forward(request,response); }
+
+                case "/formpatient":
+                    request.getRequestDispatcher(formpatient).forward(request,response);
+                    break;
+                case "/dashboard":
+                    request.getRequestDispatcher(dashboard).forward(request,response);
+                break;
+                default:
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found.");
+                    break;
+            }
+        } catch (ServletException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException {
        try {
@@ -67,10 +124,7 @@ public void init() throws ServletException
                        HttpSession session = request.getSession(true);
                        session.setAttribute("username",log);
 
-                       request.getRequestDispatcher(dashbord).forward(request, response);
-
-
-
+                       request.getRequestDispatcher(dashboard).forward(request, response);
                    }
                    else
                    {
@@ -85,55 +139,7 @@ public void init() throws ServletException
 
 
     }
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            String action = request.getServletPath();
-            switch (action) {
-                case "/accueil ":
-                    request.getRequestDispatcher(index).forward(request, response);
-                    break;
 
-               case "/rendezvous":
-
-                    request.getRequestDispatcher(create).forward(request, response);
-
-
-                    break;
-                case "/login":
-                    request.getRequestDispatcher(login).forward(request,response);
-                    break;
-                case "/reservation":
-                case "/patient":
-                case "/tousrendezvous":
-                    HttpSession session = request.getSession(false);
-                    if(session != null && session.getAttribute("username") != null)
-                    {
-                        if(action.equals("/reservation"))
-                        {request.getRequestDispatcher(rendezvous).forward(request,response);}
-                        else if (action.equals("/patient"))
-                        {request.getRequestDispatcher(patients).forward(request,response);}
-                        else if(action.equals("/tousrendezvous"))
-                        {
-                            List<rendezvous> allrendezvous =intRendezvous.getall();
-                            request.setAttribute("list",allrendezvous);
-
-                            request.getRequestDispatcher(reservation).forward(request,response);
-                        }
-                    }
-                    else
-                    {request.getRequestDispatcher(login).forward(request,response); }
-
-
-
-                default:
-                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found.");
-                    break;
-
-            }
-        } catch (ServletException | IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
         }
 
 
