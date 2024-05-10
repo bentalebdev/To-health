@@ -94,7 +94,7 @@ isELIgnored="false" pageEncoding="UTF-8" %>
         </div>
         <div class="menu">
             <ul>
-                <li><a href="index.htm" class="button-33" role="button">Accueil</a></li>
+                <li><a href="/To-health/" class="button-33" role="button">Accueil</a></li>
                 <li><a href="/To-health/reservation" class="button-33" role="button">Rendez-vous</a></li>
                 <li><a href="/To-health/patient" class="button-33" role="button">Patients</a></li>
             </ul>
