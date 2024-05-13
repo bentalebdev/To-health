@@ -1,5 +1,8 @@
+<%@page language="java" contentType="text/html; charset=UTF-8"
+isELIgnored="false" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -86,6 +89,7 @@
     <div class="dashboard">
         <h1>Dashboard</h1>
         <div class="info">
+            <p> nombre des rendez-vous aujourd hui : ${rdncount} </p>
             <p>Heure actuelle : <span id="currentTime"></span></p>
         </div>
         <div class="menu">

@@ -1,6 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri ="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@page language="java" contentType="text/html; charset=UTF-8"
+isELIgnored="false" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -66,6 +66,24 @@
             box-shadow: rgba(255, 255, 255, .2) 0 3px 15px inset, rgba(0, 0, 0, .1) 0 3px 5px, rgba(0, 0, 0, .1) 0 10px 13px;
             transform: scale(1.05);
         }
+        .button-33 {
+                    background-color: #c2fbd7;
+                    border-radius: 100px;
+                    box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset,rgba(44, 187, 99, .15) 0 1px 2px,rgba(44, 187, 99, .15) 0 2px 4px,rgba(44, 187, 99, .15) 0 4px 8px,rgba(44, 187, 99, .15) 0 8px 16px,rgba(44, 187, 99, .15) 0 16px 32px;
+                    color: green;
+                    cursor: pointer;
+                    display: inline-block;
+                    font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;
+                    padding: 7px 20px;
+                    text-align: center;
+                    text-decoration: none;
+                    transition: all 250ms;
+                    border: 0;
+                    font-size: 16px;
+                    user-select: none;
+                    -webkit-user-select: none;
+                    touch-action: manipulation;
+                }
 
         @media (min-width: 768px) {
             .button-71 {
@@ -75,15 +93,15 @@
     </style>
 </head>
 <body>
-    <h1>Rendez-vous d'aujourd'hui</h1>
+    <h1>affichage des rendez-vous </h1>
 
     <!-- Modified Button -->
+    <form action ="/To-health/reservation" method= "get">
     <label>Mot cle </label>
-    <input type = "text" name = "motcle"/>
-    <button type = "submit" class="btn btn-primary" > chercher </button>
-
-    <button class="button-71" id="filterButton">Filtrer les rendez-vous</button>
-    <button onclick="window.location.href='/To-health/reserver'">Reserver un rendez-vous</button>
+    <input type = "text" name = "indice"/>
+    <button type = "submit" class="button-33" > chercher </button>
+    </form>
+    <button onclick="window.location.href='/To-health/reserver'" class="button-33">Reserver un rendez-vous </button>
 
 
 
@@ -99,18 +117,23 @@
             </tr>
         </thead>
         <tbody >
-            <c:forEach items = "${list}" var="rendezvous">
+            <c:forEach items = "${list}" var="r">
             <tr>
-                <td>${rendezvous.id}</td>
-                <td>${rendezvous.nom}</td>
-                <td>${rendezvous.prenom}</td>
-                <td>${rendezvous.cin}</td>
-                 <td>${rendezvous.telephone}</td>
-                 <td>${rendezvous.date}</td>
-                 <td>${rendezvous.date_heure}</td>
+                 <td>${r.nom}</td>
+                 <td>${r.prenom}</td>
+                 <td>${r.cin}</td>
+                 <td>${r.telephone}</td>
+                 <td>${r.date}</td>
+                 <td>${r.date_heure}</td>
             </tr>
+            </c:forEach>
+           <td>
+           <a onclick="return confirm('Etes vous sûr?!');" href="<c:url value='/To-health/reservation/delete?cin=${rendezvous.cin}' />" class="btn-sm btn-danger"> <span data-feather="trash-2"></span></a>
 
-           </c:forEach>
+           </td>
+
+
+
 
         </tbody>
     </table>

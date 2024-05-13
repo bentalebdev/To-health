@@ -1,5 +1,5 @@
 <%@page language="java" contentType="text/html; charset=UTF-8"
-        pageEncoding="UTF-8"%>
+isELIgnored="false" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="fr">
@@ -78,19 +78,9 @@
         <label for="heure">Heure :</label>
         <select id="heure" name="heure" required>
             <option value="" disabled selected>Choisissez une heure</option>
-            <option value="09:00">09:00</option>
-            <option value="09:30">09:30</option>
-            <option value="10:00">10:00</option>
-            <option value="10:30">10:30</option>
-            <option value="11:00">11:00</option>
-            <option value="11:30">11:30</option>
-            <option value="12:00">12:00</option>
-            <option value="12:30">12:30</option>
-            <option value="13:00">13:00</option>
-            <option value="13:30">13:30</option>
-            <option value="14:00">14:00</option>
-            <option value="14:30">14:30</option>
-            <option value="15:00">15:00</option>
+            <c:forEach items = "${heurs}" var = "heure">
+            <option value = "${heurs}" >${heurs}</option>
+            </c:forEach>
         </select>
 
         <label for="captcha">Entrez le nombre affiche sur l'image ci-dessous :</label>
@@ -108,7 +98,7 @@
         function validateForm() {
             var captcha = document.getElementById("captcha").value;
             if (captcha != document.getElementById("captcha-image").getAttribute("data-captcha")) {
-                alert("Veuillez r�pondre correctement � la question de s�curit�.");
+                alert("Veuillez repondre correctement a la question de securite.");
                 return false;
             }
             // Clear form fields after submission

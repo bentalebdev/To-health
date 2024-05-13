@@ -15,28 +15,30 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-@WebServlet(value = {"/accueil", "/rendezvous", "/login","/reservation" , "/patient" ,"/reserver", "/formpatient" , "/dashboard" })
+@WebServlet(value = {"/accueil", "/rendezvous", "/login","/reservation" ,"/patient" ,"/reserver", "/formpatient" , "/dashboard","/reservation/delete" })
 public class Regservlet extends HttpServlet {
 
-private final String index ="WEB-INF/html/index.html";
-private final String create ="WEB-INF/html/form.jsp";
-private final String login = "WEB-INF/html/logindoc.html";
-private final String dashboard = "WEB-INF/html/dashbord.html";
-private final String assistantrendezvous = "WEB-INF/html/appointments.html";
-private final String patients = "WEB-INF/html/patients.html";
-private final String reservations = "WEB-INF/html/rdnauj.jsp";
-private final String formpatient = "WEB-INF/html/formPatient.jsp";
-private final String Confirmer = "WEB-INF/html/success.jsp";
-private IntRendezvous dao = new rendezvousIMP();
+    private final String index ="WEB-INF/html/index.html";
+    private final String create ="WEB-INF/html/form.jsp";
+    private final String login = "WEB-INF/html/logindoc.html";
+    private final String dashboard = "WEB-INF/html/dashbord.jsp";
+    private final String assistantrendezvous = "WEB-INF/html/appointments.html";
+    private final String patients = "WEB-INF/html/patients.html";
+    private final String reservations = "WEB-INF/html/rdnauj.jsp";
+    private final String formpatient = "WEB-INF/html/formPatient.jsp";
+    private final String Confirmer = "WEB-INF/html/success.jsp";
+    private IntRendezvous dao = new rendezvousIMP();
 
 
-private rendezvousIMP intRendezvous;
-public void init() throws ServletException
-{
-    super.init();
-    intRendezvous = new rendezvousIMP();
-}
+    private rendezvousIMP intRendezvous;
+    public void init() throws ServletException
+    {
+        super.init();
+        intRendezvous = new rendezvousIMP();
+    }
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String cin ;
+        String date ;
         try {
             String action = request.getServletPath();
             switch (action) {
@@ -45,7 +47,9 @@ public void init() throws ServletException
                     break;
 
                 case "/rendezvous":
-
+                   /* date = request.getParameter("date");
+                    List<String> heurs = dao.getheurreserve(date);
+                    request.setAttribute("heurs",heurs);*/
                     request.getRequestDispatcher(create).forward(request, response);
                     break;
 
@@ -61,11 +65,16 @@ public void init() throws ServletException
                     {
                         if(action.equals("/reservation"))
                         {
-                            List<rendezvous> allrendezvous = dao.getall();
-                            request.setAttribute("list",allrendezvous);
-                            request.getRequestDispatcher(reservations).forward(request,response);
+                            String jour = request.getParameter("indice");
+                            try {
+                                List<rendezvous> allrendezvous = dao.getall(jour);
+                                request.setAttribute("list",allrendezvous);
+                                request.getRequestDispatcher(reservations).forward(request,response);
+
+                            }catch (Exception e){System.out.print(e);}
 
                         }
+
                         else if (action.equals("/patient"))
                         {request.getRequestDispatcher(patients).forward(request,response);}
                         else if(action.equals("/reserver"))
@@ -80,8 +89,19 @@ public void init() throws ServletException
                     request.getRequestDispatcher(formpatient).forward(request,response);
                     break;
                 case "/dashboard":
+                    int rdntoday = dao.getrdntoday();
+                    request.setAttribute("rdncount" , rdntoday);
+
                     request.getRequestDispatcher(dashboard).forward(request,response);
-                break;
+                    break;
+                case "/reservation/delete":
+                     cin = request.getParameter("cin");
+                     dao.delete(cin);
+                     response.sendRedirect(request.getContextPath() + "/rendezvous");
+
+                     break;
+
+
                 default:
                     response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found.");
                     break;
@@ -92,57 +112,52 @@ public void init() throws ServletException
     }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-       try {
-           String action = request.getServletPath();
-           switch (action) {
-               case "/rendezvous":
+        try {
+            String action = request.getServletPath();
+            switch (action) {
+                case "/rendezvous":
 
 
-                   String nom = request.getParameter("nom");
-                   String prenom = request.getParameter("prenom");
-                   String cin = request.getParameter("cin");
-                   int telephone = Integer.parseInt(request.getParameter("telephone"));
-                   String date = request.getParameter("date");
-                   String date_heure = request.getParameter("heure");
+                    String nom = request.getParameter("nom");
+                    String prenom = request.getParameter("prenom");
+                    String cin = request.getParameter("cin");
+                    int telephone = Integer.parseInt(request.getParameter("telephone"));
+                    String date = request.getParameter("date");
+                    String date_heure = request.getParameter("heure");
 
-                   rendezvous rendezvous1 = new rendezvous();
-                   rendezvous1.setNom(nom);
-                   rendezvous1.setPrenom(prenom);
-                   rendezvous1.setCin(cin);
-                   rendezvous1.setTelephone(telephone);
-                   rendezvous1.setDate(date);
-                   rendezvous1.setDate_heure(date_heure);
+                    rendezvous rendezvous1 = new rendezvous();
+                    rendezvous1.setNom(nom);
+                    rendezvous1.setPrenom(prenom);
+                    rendezvous1.setCin(cin);
+                    rendezvous1.setTelephone(telephone);
+                    rendezvous1.setDate(date);
+                    rendezvous1.setDate_heure(date_heure);
 
-                   intRendezvous.prendre(rendezvous1);
-                   break;
+                    intRendezvous.prendre(rendezvous1);
+                    break;
 
-               case "/login":
-                   String log = request.getParameter("username");
-                   String pass = request.getParameter("password");
+                case "/login":
+                    String log = request.getParameter("username");
+                    String pass = request.getParameter("password");
 
-                   if (log.equals("assistant") || pass.equals("assistant")) {
-                       HttpSession session = request.getSession(true);
-                       session.setAttribute("username",log);
+                    if (log.equals("assistant") || pass.equals("assistant")) {
+                        HttpSession session = request.getSession(true);
+                        session.setAttribute("username",log);
 
-                       request.getRequestDispatcher(dashboard).forward(request, response);
-                   }
-                   else
-                   {
-                       JOptionPane.showMessageDialog(null, "Le login ou le mot de passe est incorrect.", "Erreur", JOptionPane.ERROR_MESSAGE);
-                   }
-                   break;
+                        request.getRequestDispatcher(dashboard).forward(request, response);
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(null, "Le login ou le mot de passe est incorrect.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                    }
+                    break;
 
-           }
-       }catch (ServletException | IOException e) {
+            }
+        }catch (ServletException | IOException e) {
             throw new RuntimeException(e);}
 
 
 
     }
 
-        }
-
-
-
-
-
+}

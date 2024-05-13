@@ -71,10 +71,10 @@
         <label for="nom">Nom :</label>
         <input type="text" id="nom" name="nom" required>
 
-        <label for="prenom">Prénom :</label>
+        <label for="prenom">Prenom :</label>
         <input type="text" id="prenom" name="prenom" required>
 
-        <label for="telephone">Téléphone :</label>
+        <label for="telephone">Telephone :</label>
         <input type="text" id="telephone" name="telephone" required>
 
         <label for="date_naissance">Date de naissance :</label>
@@ -90,10 +90,10 @@
             <label for="femme">Femme</label>
         </div>
         
-        <label for="derniere_visite">Dernière visite :</label>
+        <label for="derniere_visite">Derniere visite :</label>
         <input type="date" id="derniere_visite" name="derniere_visite" style="width: 100%; margin-bottom: 10px;">
 
-        <label for="acte_medicale">Acte médical :</label>
+        <label for="acte_medicale">Acte medical :</label>
         <textarea id="acte_medicale" name="acte_medicale" rows="4" style="width: calc(100% - 22px);"></textarea>
 
         <input type="submit" value="Ajouter">
