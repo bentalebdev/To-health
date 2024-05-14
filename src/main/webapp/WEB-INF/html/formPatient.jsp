@@ -67,12 +67,14 @@
 
 <div class="container">
     <h2>Ajouter un patient</h2>
-    <form action="#" method="post">
+    <form action="/To-health/formpatient" method="post">
         <label for="nom">Nom :</label>
         <input type="text" id="nom" name="nom" required>
 
         <label for="prenom">Prenom :</label>
         <input type="text" id="prenom" name="prenom" required>
+        <label for="cin">cin :</label>
+        <input type="text" id="cin" name="cin" required>
 
         <label for="telephone">Telephone :</label>
         <input type="text" id="telephone" name="telephone" required>

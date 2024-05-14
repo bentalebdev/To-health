@@ -1,17 +1,23 @@
 package action;
 
 import dao.IntRendezvous;
+import dao.PatientDao;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import models.Patient;
 import models.rendezvous;
 import dao.rendezvousIMP;
+import dao.PatientImp;
+import dao.PatientDao;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -23,11 +29,12 @@ public class Regservlet extends HttpServlet {
     private final String login = "WEB-INF/html/logindoc.html";
     private final String dashboard = "WEB-INF/html/dashbord.jsp";
     private final String assistantrendezvous = "WEB-INF/html/appointments.html";
-    private final String patients = "WEB-INF/html/patients.html";
+    private final String patients = "WEB-INF/html/patients.jsp";
     private final String reservations = "WEB-INF/html/rdnauj.jsp";
     private final String formpatient = "WEB-INF/html/formPatient.jsp";
     private final String Confirmer = "WEB-INF/html/success.jsp";
     private IntRendezvous dao = new rendezvousIMP();
+    private PatientDao dao1 ;
 
 
     private rendezvousIMP intRendezvous;
@@ -35,6 +42,8 @@ public class Regservlet extends HttpServlet {
     {
         super.init();
         intRendezvous = new rendezvousIMP();
+        dao1 = new PatientImp();
+
     }
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String cin ;
@@ -58,7 +67,16 @@ public class Regservlet extends HttpServlet {
                     break;
 
                 case "/reservation":
+                    break;
                 case "/patient":
+                    dao1 = new PatientImp();
+
+                    List<Patient> patients1 = dao1.getallPatients();
+                    request.setAttribute("patients", patients1); // Set patients as request attribute
+                    request.getRequestDispatcher(patients).forward(request,response);
+
+
+                    break;
                 case "/reserver":
                     HttpSession session = request.getSession(false);
                     if(session != null && session.getAttribute("username") != null)
@@ -135,6 +153,39 @@ public class Regservlet extends HttpServlet {
 
                     intRendezvous.prendre(rendezvous1);
                     break;
+                case "/formpatient":
+                    String nom1 = request.getParameter("nom");
+                    String prenom1 = request.getParameter("prenom");
+                    String cin1 = request.getParameter("cin");
+                    String genre = request.getParameter("genre");
+                    String date_naissance = request.getParameter("date_naissance");
+                    String derniere_visite = request.getParameter("derniere_visite");
+                    int telephone1 = Integer.parseInt(request.getParameter("telephone"));
+                    String acte_medicale = request.getParameter("acte_medicale");
+
+                    Patient patient = new Patient();
+                    patient.setNom(nom1);
+                    patient.setPrenom(prenom1);
+                    patient.setCin(cin1);
+                    String genre1 = request.getParameter("genre");
+                    if (genre != null && (genre.equals("homme") || genre.equals("femme"))) {
+                        patient.setGenre(genre);
+                    } else {
+                        // Handle invalid genre value (e.g., log an error, set a default value, or display a message)
+                        // For simplicity, let's set a default value
+                        patient.setGenre("Undefined");
+                    }
+                    patient.setDate_naissance(date_naissance);
+                    patient.setDerniere_visite(derniere_visite);
+                    patient.setTelephone(telephone1);
+                    patient.setActe_medicale(acte_medicale);
+
+                    dao1.Ajouter(patient);
+                    response.sendRedirect(request.getContextPath() + "/patient");
+
+                    break;
+
+
 
                 case "/login":
                     String log = request.getParameter("username");
