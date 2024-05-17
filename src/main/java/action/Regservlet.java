@@ -1,12 +1,15 @@
 package action;
 
 import dao.IntRendezvous;
+import dao.PatientDao;
+import dao.PatientImp;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import models.Patient;
 import models.rendezvous;
 import dao.rendezvousIMP;
 
@@ -162,7 +165,18 @@ public class Regservlet extends HttpServlet {
                     rendezvousA.setDate_heure(date_heure1);
 
                     dao.prendre(rendezvousA);
+                case "/patient/delete":
+                    PatientDao dao1=new PatientImp();
+                    String id = request.getParameter("id");
+                    dao1.DeletePatient(id);
 
+                    // Update the list of patients after deletion
+                    List<Patient> updatedPatients = dao1.getallPatients();
+                    request.setAttribute("patients", updatedPatients); // Set updated list of patients as request attribute
+
+                    // Forward the updated list to the patients.jsp page
+                    request.getRequestDispatcher(patients).forward(request, response);
+                    break;
                 case "/login":
                     String log = request.getParameter("username");
                     String pass = request.getParameter("password");
