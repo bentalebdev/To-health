@@ -1,3 +1,6 @@
+<%@page language="java" contentType="text/html; charset=UTF-8"
+isELIgnored="false" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -117,6 +120,24 @@
             </td>
         </tr>
         <!-- Ajoutez d'autres lignes pour d'autres patients -->
+        </tbody>
+        <tbody>
+        <c:forEach items="${patients}" var="patient">
+            <tr>
+                <td>${patient.nom}</td>
+                <td>${patient.prenom}</td>
+                <td>${patient.cin}</td>
+                <td>${patient.genre}</td>
+                <td>${patient.date_naissance}</td>
+                <td>${patient.derniere_visite}</td>
+                <td>${patient.telephone}</td>
+                <td>${patient.acte_medicale}</td>
+                <td>
+                    <button class="btn" onclick="modifierPatient(this)">Modifier</button>
+                    <button class="btn" onclick="supprimerPatient(this)">Supprimer</button>
+                </td>
+            </tr>
+        </c:forEach>
         </tbody>
     </table>
     <input type="text" id="recherche" placeholder="Rechercher un patient...">

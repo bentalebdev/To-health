@@ -11,32 +11,30 @@ import models.rendezvous;
 import dao.rendezvousIMP;
 
 import java.io.IOException;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-@WebServlet(value = {"/accueil","/rendezvous","/rendezvous/jour", "/rendezvous/formulaire", "/login","/dashboard","/reservation" ,"/patient" ,"/reserver", "/formpatient" , "/reservation/delete" })
+@WebServlet(value = {"/accueil", "/rendezvous", "/login","/reservation" ,"/patient" ,"/reserver", "/formpatient" , "/dashboard","/reservation/delete" })
 public class Regservlet extends HttpServlet {
 
     private final String index ="WEB-INF/html/index.html";
-    private final String create ="WEB-INF/html/jour.jsp";
-    private final String login = "WEB-INF/html/formulaire.jsp";
+    private final String create ="WEB-INF/html/form.jsp";
+    private final String login = "WEB-INF/html/logindoc.html";
     private final String dashboard = "WEB-INF/html/dashbord.jsp";
     private final String assistantrendezvous = "WEB-INF/html/appointments.html";
     private final String patients = "WEB-INF/html/patients.html";
     private final String reservations = "WEB-INF/html/rdnauj.jsp";
     private final String formpatient = "WEB-INF/html/formPatient.jsp";
-    private  final String formulaire = "/WEB-INF/html/formulaire.jsp";
     private final String Confirmer = "WEB-INF/html/success.jsp";
-    private IntRendezvous dao;
+    private IntRendezvous dao = new rendezvousIMP();
 
 
-
+    private rendezvousIMP intRendezvous;
     public void init() throws ServletException
     {
         super.init();
-        dao = new rendezvousIMP();
+        intRendezvous = new rendezvousIMP();
     }
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String cin ;
@@ -49,6 +47,9 @@ public class Regservlet extends HttpServlet {
                     break;
 
                 case "/rendezvous":
+                   /* date = request.getParameter("date");
+                    List<String> heurs = dao.getheurreserve(date);
+                    request.setAttribute("heurs",heurs);*/
                     request.getRequestDispatcher(create).forward(request, response);
                     break;
 
@@ -57,29 +58,21 @@ public class Regservlet extends HttpServlet {
                     break;
 
                 case "/reservation":
-                    String jour = request.getParameter("indice");
-
-                    try {
-                        List<rendezvous> allrendezvous = dao.getall(jour);
-                        request.setAttribute("list", allrendezvous);
-                        request.getRequestDispatcher(reservations).forward(request, response);
-                    }catch (Exception e){System.out.print(e);}
-                    break;
-                    case "/patient":
+                case "/patient":
                 case "/reserver":
                     HttpSession session = request.getSession(false);
                     if(session != null && session.getAttribute("username") != null)
                     {
                         if(action.equals("/reservation"))
                         {
-                           /* String jour = request.getParameter("indice");
+                            String jour = request.getParameter("indice");
                             try {
                                 List<rendezvous> allrendezvous = dao.getall(jour);
                                 request.setAttribute("list",allrendezvous);
                                 request.getRequestDispatcher(reservations).forward(request,response);
 
                             }catch (Exception e){System.out.print(e);}
-*/
+
                         }
 
                         else if (action.equals("/patient"))
@@ -103,20 +96,10 @@ public class Regservlet extends HttpServlet {
                     break;
                 case "/reservation/delete":
                      cin = request.getParameter("cin");
-                     jour=request.getParameter("indice");
                      dao.delete(cin);
-                     response.sendRedirect(request.getContextPath() + "/reservation?indice =" + jour);
+                     response.sendRedirect(request.getContextPath() + "/rendezvous");
+
                      break;
-                case "/rendezvous/formulaire":
-                    String day = request.getParameter("date");
-                    request.setAttribute("jour",day);
-                    try {
-                        List<String> heurs = dao.getheur(day);
-
-                        request.setAttribute("list",heurs);
-                        request.getRequestDispatcher(formulaire).forward(request,response);
-
-                    }catch (Exception e){System.out.print(e);}
 
 
                 default:
@@ -132,36 +115,26 @@ public class Regservlet extends HttpServlet {
         try {
             String action = request.getServletPath();
             switch (action) {
-                case "/rendezvous/formulaire":
+                case "/rendezvous":
+
+
                     String nom = request.getParameter("nom");
                     String prenom = request.getParameter("prenom");
                     String cin = request.getParameter("cin");
                     int telephone = Integer.parseInt(request.getParameter("telephone"));
-                    String date = request.getParameter("jour");
-                    String heure = request.getParameter("heure");
+                    String date = request.getParameter("date");
+                    String date_heure = request.getParameter("heure");
 
-                    rendezvous rendezvous = new rendezvous(nom , prenom , cin , telephone , date ,heure);
-                    dao.prendre(rendezvous);
+                    rendezvous rendezvous1 = new rendezvous();
+                    rendezvous1.setNom(nom);
+                    rendezvous1.setPrenom(prenom);
+                    rendezvous1.setCin(cin);
+                    rendezvous1.setTelephone(telephone);
+                    rendezvous1.setDate(date);
+                    rendezvous1.setDate_heure(date_heure);
+
+                    intRendezvous.prendre(rendezvous1);
                     break;
-
-
-                case "/reserver":
-                    String nom1 = request.getParameter("nom");
-                    String prenom1 = request.getParameter("prenom ");
-                    String cin1 = request.getParameter("cin");
-                    int telephone1 = Integer.parseInt(request.getParameter("telephone"));
-                    String date1 = request.getParameter("date");
-                    String date_heure1 = request.getParameter("heure");
-
-                    rendezvous rendezvousA = new rendezvous();
-                    rendezvousA.setNom(nom1);
-                    rendezvousA.setPrenom(prenom1);
-                    rendezvousA.setCin(cin1);
-                    rendezvousA.setTelephone(telephone1);
-                    rendezvousA.setDate(date1);
-                    rendezvousA.setDate_heure(date_heure1);
-
-                    dao.prendre(rendezvousA);
 
                 case "/login":
                     String log = request.getParameter("username");
