@@ -1,6 +1,15 @@
 package models;
 
 public class Patient {
+    public int getIdpatient() {
+        return Idpatient;
+    }
+
+    public void setIdpatient(int idpatient) {
+        Idpatient = idpatient;
+    }
+
+    int Idpatient;
     String nom;
     String prenom;
     String cin;

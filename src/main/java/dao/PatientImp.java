@@ -19,7 +19,7 @@ public class PatientImp implements PatientDao {
             pst.setString(1, patient.getNom());
             pst.setString(2, patient.getPrenom());
             pst.setString(3, patient.getCin());
-            pst.setString(4, patient.getTelephone());
+            pst.setInt(4, patient.getTelephone());
             pst.setString(5, patient.getDate_naissance());
             pst.setString(6, patient.getGenre());
             pst.setString(7, patient.getDerniere_visite());
@@ -54,7 +54,7 @@ public class PatientImp implements PatientDao {
                 patient.setGenre(rs.getString("genre"));
                 patient.setDerniere_visite(rs.getString("derniere_visite"));
                 patient.setActe_medicale(rs.getString("acte_medicale"));
-                patient.setTelephone(rs.getString("telephone"));
+                patient.setTelephone(rs.getInt("telephone"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -84,7 +84,7 @@ public class PatientImp implements PatientDao {
             pst.setString(1, patient.getNom());
             pst.setString(2, patient.getPrenom());
             pst.setString(3, patient.getGenre());
-            pst.setString(4, patient.getTelephone());
+            pst.setInt(4, patient.getTelephone());
             pst.setString(5, patient.getDate_naissance());
             pst.setString(6, patient.getDerniere_visite());
             pst.setString(7, patient.getActe_medicale());
