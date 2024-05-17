@@ -4,6 +4,7 @@ import models.rendezvous;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,8 +37,9 @@ Connection cnx = connectiondb.getConnection();
         try
         {
             PreparedStatement pst = cnx.prepareStatement(strquery);
-            pst.setString(1,jour);
-            rs = pst.executeQuery(strquery);
+            java.sql.Date jourDate = java.sql.Date.valueOf(jour);
+            pst.setDate(1, jourDate);
+            rs = pst.executeQuery();
 
             while(rs.next())
             {
@@ -46,13 +48,13 @@ Connection cnx = connectiondb.getConnection();
                 r.setPrenom(rs.getString(2));
                 r.setCin(rs.getString(3));
                 r.setTelephone(rs.getInt(4));
-                r.setDate(rs.getString(5));
+                r.setDate(String.valueOf(rs.getDate(5)));
                 r.setDate_heure(rs.getString(6));
 
                 allrendezvous.add(r);
-                return allrendezvous;
+
             }
-            return allrendezvous;
+
 
 
         }catch (Exception e){System.out.print(e);}
@@ -72,7 +74,7 @@ Connection cnx = connectiondb.getConnection();
         try
         {
             PreparedStatement pst = cnx.prepareStatement(strquery);
-            pst.setString(3,cin);
+            pst.setString(1,cin);
             pst.executeUpdate();
         }
         catch (Exception e){System.out.print(e);}
@@ -119,5 +121,27 @@ Connection cnx = connectiondb.getConnection();
         }catch (Exception e ){System.out.print(e);}
         return count;
     }
+
+    public List<String> getheur(String jour)
+    {
+        List<String> heursdispo = new ArrayList<>();
+        try {
+
+
+            String sql = "WITH heures_disponibles AS ( SELECT '08:00' AS heure UNION ALL SELECT '09:00' UNION ALL SELECT '10:00' UNION ALL SELECT '11:00' UNION ALL SELECT '12:00' UNION ALL SELECT '13:00' UNION ALL SELECT '14:00' UNION ALL SELECT '15:00' UNION ALL SELECT '16:00' UNION ALL SELECT '17:00' ) SELECT heure FROM heures_disponibles LEFT JOIN rendezvous r ON r.jour = ? AND r.date_heure = heures_disponibles.heure WHERE r.date_heure IS NULL ";
+            PreparedStatement pst = cnx.prepareStatement(sql);
+            java.sql.Date jourDATE = java.sql.Date.valueOf(jour);
+            pst.setDate(1,jourDATE);
+
+            rs = pst.executeQuery();
+            while (rs.next())
+            {
+                heursdispo.add(rs.getString(1));
+            }
+            return heursdispo;
+        }catch (Exception e){System.out.print(e);}
+        return heursdispo;
+    }
+
 
 }

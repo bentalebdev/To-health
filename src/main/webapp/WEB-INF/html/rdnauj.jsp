@@ -7,6 +7,8 @@ isELIgnored="false" pageEncoding="UTF-8" %>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rendez-vous d'aujourd'hui</title>
+        <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+
     <style>
         /* Styling for better appearance (optional) */
         body {
@@ -96,11 +98,14 @@ isELIgnored="false" pageEncoding="UTF-8" %>
     <h1>affichage des rendez-vous </h1>
 
     <!-- Modified Button -->
-    <form action ="/To-health/reservation" method= "get">
+
     <label>Mot cle </label>
-    <input type = "text" name = "indice"/>
-    <button type = "submit" class="button-33" > chercher </button>
-    </form>
+<form action="<c:url value='/reservation'/>" method="GET">
+    <input type="text" name="indice"/>
+    <button type="submit" class="button-33">chercher</button>
+</form>
+
+
     <button onclick="window.location.href='/To-health/reserver'" class="button-33">Reserver un rendez-vous </button>
 
 
@@ -125,12 +130,13 @@ isELIgnored="false" pageEncoding="UTF-8" %>
                  <td>${r.telephone}</td>
                  <td>${r.date}</td>
                  <td>${r.date_heure}</td>
+                 <td>
+                  <a onclick="return confirm('Etes vous sûr?!');" href="<c:url value='/reservation/delete?cin=${r.cin}' />" class="btn-sm btn-danger"> <span data-feather="trash-2"></span></a>
+
+                  </td>
             </tr>
             </c:forEach>
-           <td>
-           <a onclick="return confirm('Etes vous sûr?!');" href="<c:url value='/To-health/reservation/delete?cin=${rendezvous.cin}' />" class="btn-sm btn-danger"> <span data-feather="trash-2"></span></a>
 
-           </td>
 
 
 
@@ -176,5 +182,8 @@ isELIgnored="false" pageEncoding="UTF-8" %>
         // Filtrer les rendez-vous lors du chargement de la page
         filterAppointments();
     </script>
+    <script>
+            feather.replace();
+        </script>
 </body>
 </html>
