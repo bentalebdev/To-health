@@ -1,5 +1,5 @@
 <%@page language="java" contentType="text/html; charset=UTF-8"
-isELIgnored="false" pageEncoding="UTF-8" %>
+    isELIgnored="false" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="fr">
@@ -86,92 +86,57 @@ isELIgnored="false" pageEncoding="UTF-8" %>
 </head>
 <body>
 <div class="container">
-    <!-- Dashboard and Add Patient buttons -->
-    <button class="btn" onclick="window.location.href='/To-health/dashboard'">Dashboard</button>
-    <button class="btn" onclick="window.location.href='/To-health/formpatient'">Ajouter un patient</button>
+    <!-- Boutons Dashboard et Ajouter un patient -->
+    <button class="btn" onclick="window.location.href='${pageContext.request.contextPath}/dashboard'">Dashboard</button>
+    <button class="btn" onclick="window.location.href='${pageContext.request.contextPath}/formpatient'">Ajouter un patient</button>
 
     <h2>Gestion des patients</h2>
-    <!-- Patient registration form -->
-    <form action="#" method="post">
-        <label for="nom">Nom :</label>
-        <input type="text" id="nom" name="nom" placeholder="Entrez le nom" required>
-        <!-- Add other form fields here -->
-        <input type="submit" value="Enregistrer">
-    </form>
 
-    <h3>Liste des patients</h3>
-    <!-- Patient table -->
     <table id="patientTable">
-        <!-- Table headers -->
         <thead>
-            <!-- Header row -->
-            <tr>
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>CIN</th>
-                <th>Genre</th>
-                <th>Date de naissance</th>
-                <th>Dernière visite</th>
-                <th>Téléphone</th>
-                <th>Acte médical</th>
-                <th>Actions</th>
-            </tr>
+        <tr>
+            <th>id</th>
+            <th>nom</th>
+            <th>prenom</th>
+            <th>cin</th>
+            <th>genre</th>
+            <th>date_naissance</th>
+            <th>derniere_visite</th>
+            <th>telephone</th>
+            <th>acte_medicale</th>
+            <th>Actions</th>
+        </tr>
         </thead>
-        <!-- Table body -->
         <tbody>
-            <!-- Populate table with patient data using JSTL -->
-            <c:forEach items="${patients}" var="patient">
-                <tr>
-                    <td>${patient.nom}</td>
-                    <td>${patient.prenom}</td>
-                    <td>${patient.cin}</td>
-                    <td>${patient.genre}</td>
-                    <td>${patient.date_naissance}</td>
-                    <td>${patient.derniere_visite}</td>
-                    <td>${patient.telephone}</td>
-                    <td>${patient.acte_medicale}</td>
-                    <!-- Button for deleting a patient -->
-                    <td>
-<button class="btn" onclick="supprimerPatient('${patient.id}')">Supprimer</button>
-                    </td>
-                </tr>
-            </c:forEach>
+        <c:forEach items="${patients}" var="patient">
+            <tr>
+                <td>${patient.id}</td>
+                <td>${patient.nom}</td>
+                <td>${patient.prenom}</td>
+                <td>${patient.cin}</td>
+                <td>${patient.genre}</td>
+                <td>${patient.date_naissance}</td>
+                <td>${patient.derniere_visite}</td>
+                <td>${patient.telephone}</td>
+                <td>${patient.acte_medicale}</td>
+                <td>
+                    <form action="${pageContext.request.contextPath}/patient/delete" method="post">
+                        <input type="hidden" name="id" value="${patient.id}">
+                        <button type="submit" class="btn">Supprimer</button>
+                    </form>
+
+                </td>
+            </tr>
+        </c:forEach>
         </tbody>
     </table>
-    <!-- Search input field and button -->
     <input type="text" id="recherche" placeholder="Rechercher un patient...">
     <button class="btn" onclick="rechercher()">Rechercher</button>
 </div>
 
 <script>
-  <script>
-      function supprimerPatient(patientId) {
-          if (confirm("Êtes-vous sûr de vouloir supprimer ce patient ?")) {
-              // AJAX request to delete the patient
-              var xhr = new XMLHttpRequest();
-              xhr.open("POST", "/To-health/patient/delete?Idpatient=" + patientId, true);
-              xhr.onreadystatechange = function () {
-                  if (xhr.readyState === XMLHttpRequest.DONE) {
-                      if (xhr.status === 200) {
-                          // Reload the page after successful deletion
-                          location.reload();
-                      } else {
-                          // Handle error if deletion failed
-                          console.error("Error deleting patient:", xhr.responseText);
-                      }
-                  }
-              };
-              xhr.send();
-          }
-      }
-  </script>
-
-
-
-
-    // JavaScript function for other functionalities (e.g., searching)
     function rechercher() {
-        // Logic for searching patients
+        // Logique de recherche actuelle
     }
 </script>
 </body>

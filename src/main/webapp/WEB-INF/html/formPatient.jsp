@@ -73,6 +73,8 @@
 
         <label for="prenom">Prenom :</label>
         <input type="text" id="prenom" name="prenom" required>
+         <label for="cin">Cin :</label>
+         <input type="text" id="cin" name="cin" required>
 
         <label for="telephone">Telephone :</label>
         <input type="text" id="telephone" name="telephone" required>

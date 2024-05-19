@@ -45,6 +45,7 @@ public class Regservlet extends HttpServlet {
         String date ;
         try {
             String action = request.getServletPath();
+            int id;
             switch (action) {
                 case "/accueil":
                     request.getRequestDispatcher(index).forward(request, response);
@@ -102,10 +103,17 @@ public class Regservlet extends HttpServlet {
                     }
                     else
                     {request.getRequestDispatcher(login).forward(request,response); }
+                    break;
 
                 case "/formpatient":
                     request.getRequestDispatcher(formpatient).forward(request, response);
                     break;
+                case "/patient/delete":
+                     id = Integer.parseInt(request.getParameter("id"));
+                    dao1.delete(id);
+                    response.sendRedirect(request.getContextPath() + "/patient");
+                    break;
+
 
                 case "/dashboard":
                     int rdntoday = dao.getrdntoday();
@@ -205,18 +213,7 @@ public class Regservlet extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/patient");
 
                     break;
-                case "/patient/delete":
-                    PatientDao dao1 = new PatientImp();
-                    String cinToDelete = request.getParameter("cin");
-                    dao1.DeletePatientByCin(cinToDelete);
 
-                    // Update the list of patients after deletion
-                    List<Patient> updatedPatients = dao1.getallPatients();
-                    request.setAttribute("patients", updatedPatients); // Set updated list of patients as request attribute
-
-                    // Forward the updated list to the patients.jsp page
-                    request.getRequestDispatcher(patients).forward(request, response);
-                    break;
 
 
                 case "/login":
