@@ -1,18 +1,21 @@
 package models;
 
 public class Patient {
-    public int getIdpatient() {
-        return Idpatient;
-    }
 
-    public void setIdpatient(int idpatient) {
-        Idpatient = idpatient;
-    }
 
-    int Idpatient;
+    int id;
     String nom;
     String prenom;
     String cin;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     String date_naissance;
     String genre;
     String derniere_visite;
@@ -100,3 +103,4 @@ public class Patient {
 
 
 }
+

@@ -46,7 +46,7 @@ public class PatientImp implements PatientDao {
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
                 patient = new Patient();
-                patient.setIdpatient(rs.getInt("id"));
+                patient.setId(rs.getInt("id"));
                 patient.setNom(rs.getString("nom"));
                 patient.setPrenom(rs.getString("prenom"));
                 patient.setCin(rs.getString("cin"));
@@ -93,17 +93,15 @@ public class PatientImp implements PatientDao {
         }
     }
     @Override
-    public void DeletePatient(String id){
-        String sql= "DELETE FROM patient WHERE cin=?";
-        try
-        {
-            PreparedStatement pst = cnx.prepareStatement(sql);
-            pst.setString(1,id);
+    public void DeletePatientByCin(String cin) {
+        try (PreparedStatement pst = cnx.prepareStatement("DELETE FROM patient WHERE cin = ?")) {
+            pst.setString(1, cin);
             pst.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        catch (Exception e){System.out.print(e);}
-
     }
+
 
 
     @Override
@@ -130,6 +128,11 @@ public class PatientImp implements PatientDao {
             e.printStackTrace();
         }
         return allPatients;
+    }
+
+    @Override
+    public Patient patientbycin(String cin) {
+        return null;
     }
 }
 
