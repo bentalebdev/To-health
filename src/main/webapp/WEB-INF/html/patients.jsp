@@ -123,9 +123,12 @@
                     <form action="${pageContext.request.contextPath}/patient/delete" method="get">
                         <input type="hidden" name="id" value="${patient.id}">
                         <button type="submit" class="btn">Supprimer</button>
-                        <button type="submit" class="btn">modifier</button>
 
                     </form>
+                     <form action="${pageContext.request.contextPath}/patient/update" method="get">
+                            <input type="hidden" name="id" value="${patient.id}">
+                            <button type="submit" class="btn">Modifier</button>
+                        </form>
 
                 </td>
             </tr>

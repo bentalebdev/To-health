@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-@WebServlet(value = {"/accueil","/rendezvous","/rendezvous/jour", "/rendezvous/formulaire", "/login","/dashboard","/reservation" ,"/patient" , "/patient/delete","/reserver", "/formpatient" , "/reservation/delete" })
+@WebServlet(value = {"/accueil","/rendezvous","/rendezvous/jour", "/rendezvous/formulaire", "/login","/dashboard","/reservation" ,"/patient" , "/patient/delete","/patient/edit","/patient/update","/reserver", "/formpatient" , "/reservation/delete" })
 public class Regservlet extends HttpServlet {
 
     private final String index ="WEB-INF/html/index.html";
@@ -30,6 +30,8 @@ public class Regservlet extends HttpServlet {
     private final String formpatient = "WEB-INF/html/formPatient.jsp";
     private  final String formulaire = "/WEB-INF/html/formulaire.jsp";
     private final String Confirmer = "WEB-INF/html/success.jsp";
+    private final String EDIT = "/WEB-INF/html/patientedit.jsp";
+
     private IntRendezvous dao;
     private PatientDao dao1 ;
 
@@ -112,6 +114,16 @@ public class Regservlet extends HttpServlet {
                      id = Integer.parseInt(request.getParameter("id"));
                     dao1.delete(id);
                     response.sendRedirect(request.getContextPath() + "/patient");
+                    break;
+                case "/patient/edit":
+                    id = Integer.parseInt(request.getParameter("id"));
+                    Patient patient = dao1.getPatientById(id);
+                    if (patient != null) {
+                        request.setAttribute("patient", patient);
+                        request.getRequestDispatcher(EDIT).forward(request, response);
+                    } else {
+                        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Patient not found");
+                    }
                     break;
 
 
@@ -213,9 +225,36 @@ public class Regservlet extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/patient");
 
                     break;
+                case "/patient/update":
+                    int id = Integer.parseInt(request.getParameter("id"));
+                    String nom3 = request.getParameter("nom");
+                    String prenom3 = request.getParameter("prenom");
+                    String cin3 = request.getParameter("cin");
+                    String genre3 = request.getParameter("genre");
+                    String date_naissance3 = request.getParameter("date_naissance");
+                    String derniere_visite3 = request.getParameter("derniere_visite");
+                    int telephone3 = Integer.parseInt(request.getParameter("telephone"));
+                    String acte_medicale3 = request.getParameter("acte_medicale");
+
+                    Patient updatedPatient = new Patient();
+                    updatedPatient.setId(id);
+                    updatedPatient.setNom(nom3);
+                    updatedPatient.setPrenom(prenom3);
+                    updatedPatient.setCin(cin3);
+                    updatedPatient.setGenre(genre3);
+                    updatedPatient.setDate_naissance(date_naissance3);
+                    updatedPatient.setDerniere_visite(derniere_visite3);
+                    updatedPatient.setTelephone(telephone3);
+                    updatedPatient.setActe_medicale(acte_medicale3);
+
+                    dao1.update(updatedPatient);
+                    response.sendRedirect(request.getContextPath() + "/patient");
+                    break;
+                case "/dashboard":
 
 
 
+                        break;
                 case "/login":
                     String log = request.getParameter("username");
                     String pass = request.getParameter("password");
