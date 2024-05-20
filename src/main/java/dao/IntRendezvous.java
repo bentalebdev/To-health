@@ -17,6 +17,7 @@ void update(rendezvous rendezvous);
     int getrdntoday();
 
 List <String> getheur(String jour);
+    rendezvous getrdnbycin(String cin);
 
 
 

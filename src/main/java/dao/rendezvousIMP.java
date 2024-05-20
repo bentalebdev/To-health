@@ -143,5 +143,29 @@ Connection cnx = connectiondb.getConnection();
         return heursdispo;
     }
 
+    public rendezvous getrdnbycin(String cin)
+    {
+        String sql = "select nom , prenom , cin , telephone , jour, date_heure from rendezvous where cin = ?";
+        try {
 
+
+            PreparedStatement preparedStatement = cnx.prepareStatement(sql);
+            preparedStatement.setString(1, cin);
+            rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                rendezvous r = new rendezvous();
+                r.setNom(rs.getString(1));
+                r.setPrenom(rs.getString(2));
+                r.setCin(rs.getString(3));
+                r.setTelephone(rs.getInt(4));
+                r.setDate(String.valueOf(rs.getDate(5)));
+                r.setDate_heure(rs.getString(6));
+                return r ;
+
+            }
+        }catch (Exception e) {System.out.print(e);}
+        return null;
+
+
+}
 }

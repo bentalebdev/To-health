@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-@WebServlet(value = {"/accueil","/rendezvous","/rendezvous/jour", "/rendezvous/formulaire", "/login","/dashboard","/reservation" ,"/patient" , "/patient/delete","/patient/edit","/patient/update","/reserver", "/formpatient" , "/reservation/delete" })
+@WebServlet(value = {"/accueil","/rendezvous","/rendezvous/jour", "/rendezvous/formulaire", "/login","/dashboard","/reservation" ,"/patient" , "/patient/delete","/patient/edit","/patient/update","/reserver", "/formpatient" , "/reservation/delete" ,"/reservation/edit" ,"/reservation/update" })
 public class Regservlet extends HttpServlet {
 
     private final String index ="WEB-INF/html/index.html";
@@ -29,6 +29,7 @@ public class Regservlet extends HttpServlet {
     private final String reservations = "WEB-INF/html/rdnauj.jsp";
     private final String formpatient = "WEB-INF/html/formPatient.jsp";
     private  final String formulaire = "/WEB-INF/html/formulaire.jsp";
+    private final String editR = "/WEB-INF/html/edit.jsp";
     private final String Confirmer = "WEB-INF/html/success.jsp";
     private final String EDIT = "/WEB-INF/html/patientedit.jsp";
 
@@ -154,6 +155,12 @@ public class Regservlet extends HttpServlet {
                 default:
                     response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found.");
                     break;
+                case "/reservation/edit":
+                    String cin1 = request.getParameter("cin");
+                    rendezvous r =dao.getrdnbycin(cin1);
+                    request.setAttribute("r",r);
+                    request.getRequestDispatcher(editR).forward(request,response);
+                    break;
             }
         } catch (ServletException | IOException e) {
             throw new RuntimeException(e);
@@ -163,6 +170,8 @@ public class Regservlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException {
         try {
             String action = request.getServletPath();
+            rendezvous rendezvous1 = new rendezvous();
+
             switch (action) {
                 case "/rendezvous/formulaire":
                     String nom = request.getParameter("nom");
@@ -282,6 +291,11 @@ public class Regservlet extends HttpServlet {
                     {
                         JOptionPane.showMessageDialog(null, "Le login ou le mot de passe est incorrect.", "Erreur", JOptionPane.ERROR_MESSAGE);
                     }
+                    break;
+                case "/reservation/update":
+                    String cinr =request.getParameter("cin");
+                    rendezvous1.setCin(cinr);
+                    dao.update(rendezvous1);
                     break;
 
             }
