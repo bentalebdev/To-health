@@ -91,12 +91,23 @@
             <input type="radio" id="femme" name="genre" value="femme" required>
             <label for="femme">Femme</label>
         </div>
+
+
+        <label for="daterendezvous">daterendezvous :</label>
+        <input type="date" id="daterendezvous" name="daterendezvous" rows="4" style="width: calc(100% - 22px);"></textarea>
+
         
         <label for="derniere_visite">Derniere visite :</label>
         <input type="date" id="derniere_visite" name="derniere_visite" style="width: 100%; margin-bottom: 10px;">
 
         <label for="acte_medicale">Acte medical :</label>
         <textarea id="acte_medicale" name="acte_medicale" rows="4" style="width: calc(100% - 22px);"></textarea>
+
+        <label for="etat">Etat :</label>
+        <select id="etat" style="width: calc(100% - 22px);">
+            <option value="en attent">En attente</option>
+            <option value="passe">Passe</option>
+        </select>
 
         <input type="submit" value="Ajouter">
     </form>

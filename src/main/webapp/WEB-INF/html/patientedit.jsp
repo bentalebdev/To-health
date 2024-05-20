@@ -1,4 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page language="java" contentType="text/html; charset=UTF-8"
+isELIgnored="false" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -96,11 +99,23 @@
             <label for="femme">Femme</label>
         </div>
 
+
+         <label for="Rendez-vous">Rendez-vous:</label>
+         <input type="date" id="daterendezvous" name="daterendezvous" value="${patient.daterendezvous}" style="width: 100%; margin-bottom: 10px;">
+
         <label for="derniere_visite">Derniere visite :</label>
         <input type="date" id="derniere_visite" name="derniere_visite" value="${patient.derniere_visite}" style="width: 100%; margin-bottom: 10px;">
 
         <label for="acte_medicale">Acte médical :</label>
         <textarea id="acte_medicale" name="acte_medicale" rows="4" style="width: calc(100% - 22px);">${patient.acte_medicale}</textarea>
+
+        <label for="etat">Etat :</label>
+        <select id="etat" name="etat" style="width: calc(100% - 22px);">
+            <option value="${patient.etat}">${patient.etat}</option>
+            <option value="passe">Passe</option>
+            <option value="en_attente">En attente</option>
+        </select>
+
 
         <input type="submit" value="Modifier">
     </form>

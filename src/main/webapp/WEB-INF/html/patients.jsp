@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion des patients</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -78,9 +79,24 @@
             border-radius: 4px;
             cursor: pointer;
             margin-right: 5px;
+            text-decoration: none;
         }
         .btn:hover {
             background-color: #45a049;
+        }
+        .btn-red {
+            background-color: #f44336;
+        }
+        .btn-red:hover {
+            background-color: #e53935;
+        }
+        .action-buttons a {
+            margin-right: 5px;
+        }
+        .icon {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
         }
     </style>
 </head>
@@ -101,9 +117,11 @@
             <th>cin</th>
             <th>genre</th>
             <th>date_naissance</th>
+            <th>date rendezvous</th>
             <th>derniere_visite</th>
             <th>telephone</th>
             <th>acte_medicale</th>
+            <th>etat</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -116,20 +134,18 @@
                 <td>${patient.cin}</td>
                 <td>${patient.genre}</td>
                 <td>${patient.date_naissance}</td>
+                <td>${patient.daterendezvous}</td>
                 <td>${patient.derniere_visite}</td>
                 <td>${patient.telephone}</td>
                 <td>${patient.acte_medicale}</td>
-                <td>
-                    <form action="${pageContext.request.contextPath}/patient/delete" method="get">
-                        <input type="hidden" name="id" value="${patient.id}">
-                        <button type="submit" class="btn">Supprimer</button>
-
-                    </form>
-                     <form action="${pageContext.request.contextPath}/patient/update" method="get">
-                            <input type="hidden" name="id" value="${patient.id}">
-                            <button type="submit" class="btn">Modifier</button>
-                        </form>
-
+                <td>${patient.etat}</td>
+                <td class="action-buttons">
+                    <a href="${pageContext.request.contextPath}/patient/edit?id=${patient.id}" class="btn">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a href="${pageContext.request.contextPath}/patient/delete?id=${patient.id}" class="btn btn-red" onclick="return confirm('Etes-vous sûr ?');">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
                 </td>
             </tr>
         </c:forEach>

@@ -4,6 +4,25 @@ public class Patient {
 
 
     int id;
+    String etat;
+    String daterendezvous;
+
+    public String getDaterendezvous() {
+        return daterendezvous;
+    }
+
+    public void setDaterendezvous(String daterendezvous) {
+        this.daterendezvous = daterendezvous;
+    }
+
+    public String getEtat() {
+        return etat;
+    }
+
+    public void setEtat(String etat) {
+        this.etat = etat;
+    }
+
     String nom;
     String prenom;
     String cin;

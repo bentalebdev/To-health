@@ -201,8 +201,14 @@ public class Regservlet extends HttpServlet {
                     String genre = request.getParameter("genre");
                     String date_naissance = request.getParameter("date_naissance");
                     String derniere_visite = request.getParameter("derniere_visite");
+                    String daterendezvous = request.getParameter("daterendezvous");
                     int telephone2 = Integer.parseInt(request.getParameter("telephone"));
                     String acte_medicale = request.getParameter("acte_medicale");
+                    String etat = request.getParameter("etat");
+                    if (etat == null || etat.isEmpty()) {
+                        etat = "en attente"; // Assign a default value if necessary, though it shouldn't be needed with proper HTML validation
+                    }
+
 
                     Patient patient = new Patient();
                     patient.setNom(nom2);
@@ -218,8 +224,10 @@ public class Regservlet extends HttpServlet {
                     }
                     patient.setDate_naissance(date_naissance);
                     patient.setDerniere_visite(derniere_visite);
+                    patient.setDaterendezvous(daterendezvous);
                     patient.setTelephone(telephone2);
                     patient.setActe_medicale(acte_medicale);
+                    patient.setEtat(etat);
 
                     dao1.Ajouter(patient);
                     response.sendRedirect(request.getContextPath() + "/patient");
@@ -231,10 +239,13 @@ public class Regservlet extends HttpServlet {
                     String prenom3 = request.getParameter("prenom");
                     String cin3 = request.getParameter("cin");
                     String genre3 = request.getParameter("genre");
-                    String date_naissance3 = request.getParameter("date_naissance");
-                    String derniere_visite3 = request.getParameter("derniere_visite");
                     int telephone3 = Integer.parseInt(request.getParameter("telephone"));
+                    String date_naissance3 = request.getParameter("date_naissance");
+                    String daterendezvous3 = request.getParameter("daterendezvous");
+                    String derniere_visite3 = request.getParameter("derniere_visite");
                     String acte_medicale3 = request.getParameter("acte_medicale");
+                    String etat3 = request.getParameter(("etat"));
+
 
                     Patient updatedPatient = new Patient();
                     updatedPatient.setId(id);
@@ -243,9 +254,11 @@ public class Regservlet extends HttpServlet {
                     updatedPatient.setCin(cin3);
                     updatedPatient.setGenre(genre3);
                     updatedPatient.setDate_naissance(date_naissance3);
+                    updatedPatient.setDaterendezvous(daterendezvous3);
                     updatedPatient.setDerniere_visite(derniere_visite3);
                     updatedPatient.setTelephone(telephone3);
                     updatedPatient.setActe_medicale(acte_medicale3);
+                    updatedPatient.setEtat(etat3);
 
                     dao1.update(updatedPatient);
                     response.sendRedirect(request.getContextPath() + "/patient");
