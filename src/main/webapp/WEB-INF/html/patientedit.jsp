@@ -1,5 +1,5 @@
 <%@page language="java" contentType="text/html; charset=UTF-8"
-isELIgnored="false" pageEncoding="UTF-8" %>
+    isELIgnored="false" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
@@ -33,7 +33,8 @@ isELIgnored="false" pageEncoding="UTF-8" %>
         }
         input[type="text"],
         input[type="date"],
-        textarea {
+        textarea,
+        select {
             width: calc(100% - 22px); /* Ajuster la largeur du champ pour prendre en compte la bordure */
             padding: 10px;
             margin: 8px 0;
@@ -51,19 +52,31 @@ isELIgnored="false" pageEncoding="UTF-8" %>
             margin-right: 15px;
             vertical-align: middle;
         }
-        input[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
+        input[type="submit"],
+        button {
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 10px;
             width: 100%;
             display: block;
         }
-        input[type="submit"]:hover {
+        input[type="submit"]:hover,
+        button:hover {
             background-color: #45a049;
+        }
+        button[type="button"] {
+            background-color: #f44336;
+            color: white;
+        }
+        button[type="button"]:hover {
+            background-color: #f44336;
+        }
+        /* Clearfix */
+        .container::after {
+            content: "";
+            display: table;
+            clear: both;
         }
     </style>
 </head>
@@ -99,9 +112,8 @@ isELIgnored="false" pageEncoding="UTF-8" %>
             <label for="femme">Femme</label>
         </div>
 
-
-         <label for="Rendez-vous">Rendez-vous:</label>
-         <input type="date" id="daterendezvous" name="daterendezvous" value="${patient.daterendezvous}" style="width: 100%; margin-bottom: 10px;">
+        <label for="daterendezvous">Rendez-vous:</label>
+        <input type="date" id="daterendezvous" name="daterendezvous" value="${patient.daterendezvous}" style="width: 100%; margin-bottom: 10px;">
 
         <label for="derniere_visite">Derniere visite :</label>
         <input type="date" id="derniere_visite" name="derniere_visite" value="${patient.derniere_visite}" style="width: 100%; margin-bottom: 10px;">
@@ -116,10 +128,23 @@ isELIgnored="false" pageEncoding="UTF-8" %>
             <option value="en_attente">En attente</option>
         </select>
 
+        <div style="margin-top: 10px;">
+            <button type="submit" style="float: left; width: 49%; margin-right: 2%;">Modifier</button>
+            <button type="button" style="float: left; width: 49%; margin-left: 2%; background-color: #f44336; color: white;" onclick="deletePatient()">Supprimer</button>
+        </div>
 
-        <input type="submit" value="Modifier">
     </form>
 </div>
+
+<script>
+    function deletePatient() {
+        if (confirm("Êtes-vous sûr de vouloir supprimer ce patient ?")) {
+            // Perform deletion logic here
+            // For example, you can redirect to a delete endpoint
+            window.location.href = '<c:url value="/patient/delete?id=${patient.id}"/>';
+        }
+    }
+</script>
 
 </body>
 </html>
