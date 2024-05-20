@@ -1,9 +1,13 @@
+<%@page language="java" contentType="text/html; charset=UTF-8"
+    isELIgnored="false" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion des patients</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -75,48 +79,76 @@
             border-radius: 4px;
             cursor: pointer;
             margin-right: 5px;
+            text-decoration: none;
         }
         .btn:hover {
             background-color: #45a049;
+        }
+        .btn-red {
+            background-color: #f44336;
+        }
+        .btn-red:hover {
+            background-color: #e53935;
+        }
+        .action-buttons a {
+            margin-right: 5px;
+        }
+        .icon {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
         }
     </style>
 </head>
 <body>
 <div class="container">
     <!-- Boutons Dashboard et Ajouter un patient -->
-    <button class="btn" onclick="window.location.href='/To-health/dashboard'">Dashboard</button>
-    <button class="btn" onclick="window.location.href='/To-health/formpatient'">Ajouter un patient</button>
+    <button class="btn" onclick="window.location.href='${pageContext.request.contextPath}/dashboard'">Dashboard</button>
+    <button class="btn" onclick="window.location.href='${pageContext.request.contextPath}/formpatient'">Ajouter un patient</button>
 
     <h2>Gestion des patients</h2>
-    <form action="#" method="post">
-        <label for="nom">Nom :</label>
-        <input type="text" id="nom" name="nom" placeholder="Entrez le nom" required>
 
-        <!-- Ajoutez les autres champs ici -->
-
-        <input type="submit" value="Enregistrer">
-    </form>
-
-    <h3>Liste des patients</h3>
     <table id="patientTable">
-        <!-- Vos en-têtes de tableau actuels ici -->
-        <tbody>
-        <!-- Les données des patients seront affichées ici -->
+        <thead>
         <tr>
-            <td>nom</td>
-            <td>prenom</td>
-            <td>cin</td>
-            <td>genre</td>
-            <td>date_naissance</td>
-            <td>derniere_visite</td>
-            <td>telehone</td>
-            <td>acte_medicale</td>
-            <td>
-                <button class="btn" onclick="modifierPatient(this)">Modifier</button>
-                <button class="btn" onclick="supprimerPatient(this)">Supprimer</button>
-            </td>
+            <th>id</th>
+            <th>nom</th>
+            <th>prenom</th>
+            <th>cin</th>
+            <th>genre</th>
+            <th>date_naissance</th>
+            <th>date rendezvous</th>
+            <th>derniere_visite</th>
+            <th>telephone</th>
+            <th>acte_medicale</th>
+            <th>etat</th>
+            <th>Actions</th>
         </tr>
-        <!-- Ajoutez d'autres lignes pour d'autres patients -->
+        </thead>
+        <tbody>
+        <c:forEach items="${patients}" var="patient">
+            <tr>
+                <td>${patient.id}</td>
+                <td>${patient.nom}</td>
+                <td>${patient.prenom}</td>
+                <td>${patient.cin}</td>
+                <td>${patient.genre}</td>
+                <td>${patient.date_naissance}</td>
+                <td>${patient.daterendezvous}</td>
+                <td>${patient.derniere_visite}</td>
+                <td>${patient.telephone}</td>
+                <td>${patient.acte_medicale}</td>
+                <td>${patient.etat}</td>
+                <td class="action-buttons">
+                    <a href="${pageContext.request.contextPath}/patient/edit?id=${patient.id}" class="btn">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a href="${pageContext.request.contextPath}/patient/delete?id=${patient.id}" class="btn btn-red" onclick="return confirm('Etes-vous sûr ?');">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
+                </td>
+            </tr>
+        </c:forEach>
         </tbody>
     </table>
     <input type="text" id="recherche" placeholder="Rechercher un patient...">
@@ -124,25 +156,6 @@
 </div>
 
 <script>
-    function afficherPatient(btn) {
-        // Logique pour afficher les détails du patient associé au bouton
-        // par exemple, vous pouvez ouvrir une boîte de dialogue avec les détails du patient
-        alert("Afficher les détails du patient");
-    }
-
-    function modifierPatient(btn) {
-        // Logique pour modifier les détails du patient associé au bouton
-        // par exemple, vous pouvez ouvrir un formulaire pré-rempli pour modifier les détails du patient
-        alert("Modifier les détails du patient");
-    }
-
-    function supprimerPatient(btn) {
-        // Obtenez la ligne du tableau parente du bouton
-        var row = btn.parentNode.parentNode;
-        // Supprimez la ligne du tableau
-        row.parentNode.removeChild(row);
-    }
-
     function rechercher() {
         // Logique de recherche actuelle
     }

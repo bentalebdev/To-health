@@ -1,35 +1,39 @@
 package action;
 
 import dao.IntRendezvous;
+import dao.PatientDao;
+import dao.PatientImp;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import models.Patient;
 import models.rendezvous;
 import dao.rendezvousIMP;
 
 import java.io.IOException;
-import java.sql.Time;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-@WebServlet(value = {"/accueil","/rendezvous","/rendezvous/jour", "/rendezvous/formulaire", "/login","/dashboard","/reservation" ,"/patient" ,"/reserver", "/formpatient" , "/reservation/delete","/reservation/edit", "/reservation/update" })
+@WebServlet(value = {"/accueil","/rendezvous","/rendezvous/jour", "/rendezvous/formulaire", "/login","/dashboard","/reservation" ,"/patient" , "/patient/delete","/patient/edit","/patient/update","/reserver", "/formpatient" , "/reservation/delete" })
 public class Regservlet extends HttpServlet {
+
     private final String index ="WEB-INF/html/index.html";
     private final String create ="WEB-INF/html/jour.jsp";
     private final String login = "WEB-INF/html/logindoc.html";
     private final String dashboard = "WEB-INF/html/dashbord.jsp";
     private final String assistantrendezvous = "WEB-INF/html/appointments.html";
-    private final String patients = "WEB-INF/html/patients.html";
+    private final String patients = "WEB-INF/html/patients.jsp";
     private final String reservations = "WEB-INF/html/rdnauj.jsp";
     private final String formpatient = "WEB-INF/html/formPatient.jsp";
     private  final String formulaire = "/WEB-INF/html/formulaire.jsp";
-    private final String edit = "/WEB-INF/html/edit.jsp";
     private final String Confirmer = "WEB-INF/html/success.jsp";
+    private final String EDIT = "/WEB-INF/html/patientedit.jsp";
+
     private IntRendezvous dao;
+    private PatientDao dao1 ;
 
 
 
@@ -43,6 +47,7 @@ public class Regservlet extends HttpServlet {
         String date ;
         try {
             String action = request.getServletPath();
+            int id;
             switch (action) {
                 case "/accueil":
                     request.getRequestDispatcher(index).forward(request, response);
@@ -65,7 +70,16 @@ public class Regservlet extends HttpServlet {
                         request.getRequestDispatcher(reservations).forward(request, response);
                     }catch (Exception e){System.out.print(e);}
                     break;
-                    case "/patient":
+                case "/patient":
+                    dao1 = new PatientImp();
+
+                    List<Patient> patients1 = dao1.getallPatients();
+                    request.setAttribute("patients", patients1); // Set patients as request attribute
+                    request.getRequestDispatcher(patients).forward(request,response);
+
+
+                    break;
+
                 case "/reserver":
                     HttpSession session = request.getSession(false);
                     if(session != null && session.getAttribute("username") != null)
@@ -91,10 +105,28 @@ public class Regservlet extends HttpServlet {
                     }
                     else
                     {request.getRequestDispatcher(login).forward(request,response); }
+                    break;
 
                 case "/formpatient":
-                    request.getRequestDispatcher(formpatient).forward(request,response);
+                    request.getRequestDispatcher(formpatient).forward(request, response);
                     break;
+                case "/patient/delete":
+                     id = Integer.parseInt(request.getParameter("id"));
+                    dao1.delete(id);
+                    response.sendRedirect(request.getContextPath() + "/patient");
+                    break;
+                case "/patient/edit":
+                    id = Integer.parseInt(request.getParameter("id"));
+                    Patient patient = dao1.getPatientById(id);
+                    if (patient != null) {
+                        request.setAttribute("patient", patient);
+                        request.getRequestDispatcher(EDIT).forward(request, response);
+                    } else {
+                        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Patient not found");
+                    }
+                    break;
+
+
                 case "/dashboard":
                     int rdntoday = dao.getrdntoday();
                     request.setAttribute("rdncount" , rdntoday);
@@ -117,13 +149,6 @@ public class Regservlet extends HttpServlet {
                         request.getRequestDispatcher(formulaire).forward(request,response);
 
                     }catch (Exception e){System.out.print(e);}
-                    break;
-                case "/reservation/edit":
-                    String cin1 = request.getParameter("cin");
-                    rendezvous r =dao.getrdnbycin(cin1);
-                    request.setAttribute("r",r);
-                    request.getRequestDispatcher(edit).forward(request,response);
-                    break;
 
 
                 default:
@@ -138,7 +163,6 @@ public class Regservlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException {
         try {
             String action = request.getServletPath();
-            rendezvous rendezvous1 = new rendezvous();
             switch (action) {
                 case "/rendezvous/formulaire":
                     String nom = request.getParameter("nom");
@@ -170,7 +194,80 @@ public class Regservlet extends HttpServlet {
                     rendezvousA.setDate_heure(date_heure1);
 
                     dao.prendre(rendezvousA);
+                case "/formpatient":
+                    String nom2 = request.getParameter("nom");
+                    String prenom2 = request.getParameter("prenom");
+                    String cin2 = request.getParameter("cin");
+                    String genre = request.getParameter("genre");
+                    String date_naissance = request.getParameter("date_naissance");
+                    String derniere_visite = request.getParameter("derniere_visite");
+                    String daterendezvous = request.getParameter("daterendezvous");
+                    int telephone2 = Integer.parseInt(request.getParameter("telephone"));
+                    String acte_medicale = request.getParameter("acte_medicale");
+                    String etat = request.getParameter("etat");
+                    if (etat == null || etat.isEmpty()) {
+                        etat = "en attente"; // Assign a default value if necessary, though it shouldn't be needed with proper HTML validation
+                    }
 
+
+                    Patient patient = new Patient();
+                    patient.setNom(nom2);
+                    patient.setPrenom(prenom2);
+                    patient.setCin(cin2);
+                    String genre1 = request.getParameter("genre");
+                    if (genre != null && (genre.equals("homme") || genre.equals("femme"))) {
+                        patient.setGenre(genre);
+                    } else {
+                        // Handle invalid genre value (e.g., log an error, set a default value, or display a message)
+                        // For simplicity, let's set a default value
+                        patient.setGenre("Undefined");
+                    }
+                    patient.setDate_naissance(date_naissance);
+                    patient.setDerniere_visite(derniere_visite);
+                    patient.setDaterendezvous(daterendezvous);
+                    patient.setTelephone(telephone2);
+                    patient.setActe_medicale(acte_medicale);
+                    patient.setEtat(etat);
+
+                    dao1.Ajouter(patient);
+                    response.sendRedirect(request.getContextPath() + "/patient");
+
+                    break;
+                case "/patient/update":
+                    int id = Integer.parseInt(request.getParameter("id"));
+                    String nom3 = request.getParameter("nom");
+                    String prenom3 = request.getParameter("prenom");
+                    String cin3 = request.getParameter("cin");
+                    String genre3 = request.getParameter("genre");
+                    int telephone3 = Integer.parseInt(request.getParameter("telephone"));
+                    String date_naissance3 = request.getParameter("date_naissance");
+                    String daterendezvous3 = request.getParameter("daterendezvous");
+                    String derniere_visite3 = request.getParameter("derniere_visite");
+                    String acte_medicale3 = request.getParameter("acte_medicale");
+                    String etat3 = request.getParameter(("etat"));
+
+
+                    Patient updatedPatient = new Patient();
+                    updatedPatient.setId(id);
+                    updatedPatient.setNom(nom3);
+                    updatedPatient.setPrenom(prenom3);
+                    updatedPatient.setCin(cin3);
+                    updatedPatient.setGenre(genre3);
+                    updatedPatient.setDate_naissance(date_naissance3);
+                    updatedPatient.setDaterendezvous(daterendezvous3);
+                    updatedPatient.setDerniere_visite(derniere_visite3);
+                    updatedPatient.setTelephone(telephone3);
+                    updatedPatient.setActe_medicale(acte_medicale3);
+                    updatedPatient.setEtat(etat3);
+
+                    dao1.update(updatedPatient);
+                    response.sendRedirect(request.getContextPath() + "/patient");
+                    break;
+                case "/dashboard":
+
+
+
+                        break;
                 case "/login":
                     String log = request.getParameter("username");
                     String pass = request.getParameter("password");
@@ -186,13 +283,6 @@ public class Regservlet extends HttpServlet {
                         JOptionPane.showMessageDialog(null, "Le login ou le mot de passe est incorrect.", "Erreur", JOptionPane.ERROR_MESSAGE);
                     }
                     break;
-
-                case "/reservation/update":
-                    String cin2 =request.getParameter("cin");
-                    rendezvous1.setCin(cin2);
-                    dao.update(rendezvous1);
-                    break;
-
 
             }
         }catch (ServletException | IOException e) {
