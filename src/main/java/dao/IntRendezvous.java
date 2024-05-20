@@ -1,8 +1,6 @@
 package dao;
 import models.rendezvous;
 
-import java.sql.Time;
-import java.util.Date;
 import java.util.List;
 
 public interface IntRendezvous {
@@ -15,6 +13,7 @@ void update(rendezvous rendezvous);
     int getrdntoday();
 
 List <String> getheur(String jour);
+rendezvous getrdnbycin(String cin);
 
 
 

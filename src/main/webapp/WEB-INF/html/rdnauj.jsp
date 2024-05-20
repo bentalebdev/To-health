@@ -131,6 +131,7 @@ isELIgnored="false" pageEncoding="UTF-8" %>
                  <td>${r.date}</td>
                  <td>${r.date_heure}</td>
                  <td>
+                 <a href="<c:url value='reservation/edit?cin=${r.cin}' />" class="btn-sm btn-primary"> <span data-feather="edit"></span></a>
                   <a onclick="return confirm('Etes vous sûr?!');" href="<c:url value='/reservation/delete?cin=${r.cin}' />" class="btn-sm btn-danger"> <span data-feather="trash-2"></span></a>
 
                   </td>

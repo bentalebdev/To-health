@@ -16,18 +16,18 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-@WebServlet(value = {"/accueil","/rendezvous","/rendezvous/jour", "/rendezvous/formulaire", "/login","/dashboard","/reservation" ,"/patient" ,"/reserver", "/formpatient" , "/reservation/delete" })
+@WebServlet(value = {"/accueil","/rendezvous","/rendezvous/jour", "/rendezvous/formulaire", "/login","/dashboard","/reservation" ,"/patient" ,"/reserver", "/formpatient" , "/reservation/delete","/reservation/edit", "/reservation/update" })
 public class Regservlet extends HttpServlet {
-
     private final String index ="WEB-INF/html/index.html";
     private final String create ="WEB-INF/html/jour.jsp";
-    private final String login = "WEB-INF/html/formulaire.jsp";
+    private final String login = "WEB-INF/html/logindoc.html";
     private final String dashboard = "WEB-INF/html/dashbord.jsp";
     private final String assistantrendezvous = "WEB-INF/html/appointments.html";
     private final String patients = "WEB-INF/html/patients.html";
     private final String reservations = "WEB-INF/html/rdnauj.jsp";
     private final String formpatient = "WEB-INF/html/formPatient.jsp";
     private  final String formulaire = "/WEB-INF/html/formulaire.jsp";
+    private final String edit = "/WEB-INF/html/edit.jsp";
     private final String Confirmer = "WEB-INF/html/success.jsp";
     private IntRendezvous dao;
 
@@ -117,6 +117,13 @@ public class Regservlet extends HttpServlet {
                         request.getRequestDispatcher(formulaire).forward(request,response);
 
                     }catch (Exception e){System.out.print(e);}
+                    break;
+                case "/reservation/edit":
+                    String cin1 = request.getParameter("cin");
+                    rendezvous r =dao.getrdnbycin(cin1);
+                    request.setAttribute("r",r);
+                    request.getRequestDispatcher(edit).forward(request,response);
+                    break;
 
 
                 default:
@@ -131,6 +138,7 @@ public class Regservlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException {
         try {
             String action = request.getServletPath();
+            rendezvous rendezvous1 = new rendezvous();
             switch (action) {
                 case "/rendezvous/formulaire":
                     String nom = request.getParameter("nom");
@@ -178,6 +186,13 @@ public class Regservlet extends HttpServlet {
                         JOptionPane.showMessageDialog(null, "Le login ou le mot de passe est incorrect.", "Erreur", JOptionPane.ERROR_MESSAGE);
                     }
                     break;
+
+                case "/reservation/update":
+                    String cin2 =request.getParameter("cin");
+                    rendezvous1.setCin(cin2);
+                    dao.update(rendezvous1);
+                    break;
+
 
             }
         }catch (ServletException | IOException e) {
