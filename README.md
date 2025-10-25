@@ -1,6 +1,3 @@
-C'est un excellent projet pour un portfolio ! L'application de gestion de cabinet médical couvre des aspects cruciaux de développement web (MVC, base de données, séparation front/back).
-
-Voici les **fonctionnalités principales** de votre projet, extraites de la description, structurées par rôle utilisateur :
 
 ## ✨ Fonctionnalités Principales de l'Application
 
